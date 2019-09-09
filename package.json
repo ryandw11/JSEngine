@@ -1,6 +1,6 @@
 {
   "name": "rjsengine",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "dependencies": {
     "three": "^0.108.0"
   },
@@ -14,5 +14,7 @@
     "gameengine"
   ],
   "author": "Ryandw11",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": "github:ryandw11/JSEngine",
+  "homepage": "https://github.com/ryandw11/JSEngine/wiki"
 }

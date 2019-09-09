@@ -2,7 +2,7 @@
  * Object Based Three.js Game Engine.
  * Requires Three.js and GameEngine.js to operate.
  * (This 3D engine was developed at the start of the project.)
- * @author Ryan
+ * @author Ryandw11
  * @version 1.3
 */
 import { EventHandler, UpdateEvent, GameEngine, GameObjects, MouseDownEvent, MouseMoveEvent, KeyHandler } from '../MainEngine/GameEngine.js';
