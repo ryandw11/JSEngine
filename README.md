@@ -9,7 +9,7 @@ To select a mode you just import a different file.
 ## Using JSEngine
 First you must install the module
 ```
-nvm install rjsengine
+npm install rjsengine
 ```
 You use the import key word to import either the 2D or 3D Mode.
 ```javascript
