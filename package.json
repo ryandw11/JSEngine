@@ -1,0 +1,18 @@
+{
+  "name": "rjsengine",
+  "version": "1.0.1",
+  "dependencies": {
+    "three": "^0.108.0"
+  },
+  "description": "A JavaScript 2D and 3D GameEngine. This is for a school project only, please ignore.",
+  "main": "JSEngine2D.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "school project",
+    "gameengine"
+  ],
+  "author": "Ryandw11",
+  "license": "MIT"
+}
