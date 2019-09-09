@@ -121,6 +121,24 @@ class GameEngine {
     }
 
     /**
+     * Update the current scene after any additions or removals.
+     * @param {boolean} reset If you want the entire screen to be cleared when the defined scene is loaded.
+     */
+    static updateCurrentScene(reset = false) {
+        if (reset)
+            GameObjects.clear();
+        else {
+            for (let i in GameEngine.getCurrentScene().listOfObjects) {
+                GameObjects.remove(GameEngine.getCurrentScene().listOfObjects[i]);
+            }
+        }
+        for (let i in GameEngine.getCurrentScene().listOfObjects) {
+            GameObjects.add(GameEngine.getCurrentScene().listOfObjects[i]);
+        }
+        GameEngine.currentScene = scene;
+    }
+
+    /**
      * Get the current scene.
      */
     static getCurrentScene() {

@@ -108,6 +108,26 @@ class ThreeEngine {
     }
 
     /**
+     * Update the scene.
+     * @param {boolean} reset If all data in the game window should be cleared.
+     */
+    updateCurrentScene(reset = false) {
+        if (reset) {
+            while (ThreeEngine.scene.children.length > 0) {
+                ThreeEngine.scene.remove(ThreeEngine.scene.children[0]);
+            }
+        }
+        else {
+            for (let i in this.currentScene.listOfObjects) {
+                ThreeEngine.scene.remove(this.currentScene.listOfObjects[i].getMesh());
+            }
+        }
+        for (let i in this.currentScene.listOfObjects) {
+            ThreeEngine.scene.add(this.currentScene.listOfObjects[i].getMesh());
+        }
+    }
+
+    /**
      * Get the current scene.
      */
     getCurrentScene() {

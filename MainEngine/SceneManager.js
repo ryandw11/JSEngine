@@ -1,16 +1,19 @@
+/**
+ * Handles Scenes in both 3D and 2D mode.
+ */
 class Scene {
-    constructor(){
+    constructor() {
         this.listOfObjects = [];
     }
-    add(obj){
+    add(obj) {
         this.listOfObjects.push(obj);
     }
-    remove(obj){
+    remove(obj) {
         this.listOfObjects.splice(this.listOfObjects.indexOf(obj), 1);
     }
-    clear(){
+    clear() {
         this.listOfObjects = [];
     }
 }
 
-export {Scene};
+export { Scene };
