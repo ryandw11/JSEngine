@@ -3,12 +3,39 @@
  * Requires Three.js and GameEngine.js to operate.
  * (This 3D engine was developed at the start of the project.)
  * @author Ryandw11
- * @version 1.3
+ * @version 1.4
+ * **TODO** Fix the scene management in the ThreeEngine class.
 */
 import { EventHandler, UpdateEvent, GameEngine, GameObjects, MouseDownEvent, MouseMoveEvent, KeyHandler } from '../MainEngine/GameEngine.js';
 import * as THREE from '../../three/src/Three.js';
 
 var oldTime = 0;
+
+/**
+ * Handles the 3D Objects.
+ */
+class ObjectManager {
+    static listOfObject = [];
+    static removedObjects = [];
+    /**
+     * Add an object.
+     * @param {*} obj 
+     */
+    static add(obj) {
+        ObjectManager.listOfObject.push(obj);
+    }
+    /**
+     * Remove an object
+     * @param {*} obj 
+     */
+    static remove(obj) {
+        ObjectManager.listOfObject.splice(ObjectManager.listOfObject.indexOf(obj), 1);
+        ObjectManager.removedObjects.push(obj);
+    }
+    static clear() {
+
+    }
+}
 
 /**
  * The main ThreeEngine class.
@@ -358,164 +385,6 @@ class Utils3D {
 }
 
 /**
- * The cube shape
- */
-class Cube {
-    /**
-     * Construct the cube.
-     * @param {*} vSize The size of the cube (**required**)
-     * @param {*} material The material used.
-     */
-    constructor(vSize, material = {
-        color: 0x00ff00
-    }) {
-        this.geom = new THREE.BoxGeometry(vSize.getX(), vSize.getY(), vSize.getZ());
-        if (!ThreeEngine.lighting)
-            this.material = new THREE.MeshBasicMaterial(material);
-        else
-            this.material = new THREE.MeshPhongMaterial(material);
-        this.cube = new THREE.Mesh(this.geom, this.material);
-    }
-
-    setPosition(vec, y = 0, z = 0) {
-        if (vec instanceof Vector3D) {
-            this.cube.position.x = vec.getX();
-            this.cube.position.y = vec.getY();
-            this.cube.position.z = vec.getZ();
-        } else {
-            this.cube.position.x = vec;
-            this.cube.position.y = y;
-            this.cube.position.z = z;
-        }
-        return this;
-    }
-    setSize(vec) {
-        this.cube.scale.x = vec.getX();
-        this.cube.scale.y = vec.getY();
-        this.cube.scale.z = vec.getZ();
-        return this;
-    }
-    setRotation(vec) {
-        this.cube.rotation.x = vec.getX();
-        this.cube.rotation.y = vec.getY();
-        this.cube.rotation.z = vec.getZ();
-        return this;
-    }
-    setMaterial(material) {
-        this.cube.material = new THREE.MeshBasicMaterial(material);
-    }
-    translateBy(vec) {
-        this.cube.position.x += vec.getX();
-        this.cube.position.y += vec.getY();
-        this.cube.position.z += vec.getZ();
-        return this;
-    }
-    rotateBy(vec) {
-        this.cube.rotation.x += vec.getX();
-        this.cube.rotation.y += vec.getY();
-        this.cube.rotation.z += vec.getZ();
-        return this;
-    }
-    getPosition() {
-        return new Vector3D(this.cube.position.x, this.cube.position.y, this.cube.position.z);
-    }
-    getRotation() {
-        return new Vector3D(this.cube.rotation.x, this.cube.rotation.y, this.cube.rotation.z);
-    }
-    getSize() {
-        return new Vector3D(this.cube.scale.x, this.cube.scale.y, this.cube.scale.z);
-    }
-    getMesh() {
-        return this.cube;
-    }
-
-    /**
-     * Display the cube.
-     */
-    show() {
-        ThreeEngine.scene.add(this.cube);
-        return this;
-    }
-
-    /**
-     * Hide the cube.
-     */
-    hide() {
-        ThreeEngine.scene.remove(this.cube);
-        return this;
-    }
-}
-
-/**
- * The Sphere object.
- */
-class Sphere {
-    /**
-     * Construct the sphere (No params are required)
-     * @param {*} radius The radius of the sphere
-     * @param {*} widthSeg The width segmant (Default 32)
-     * @param {*} heightSeg The height segmant (Default 32)
-     * @param {*} material The material
-     */
-    constructor(radius = 1, widthSeg = 32, heightSeg = 32, material = {
-        color: 0x8E40BC
-    }) {
-        this.geom = new THREE.SphereGeometry(radius, widthSeg, heightSeg);
-        if (!ThreeEngine.lighting)
-            this.material = new THREE.MeshBasicMaterial(material);
-        else
-            this.material = new THREE.MeshPhongMaterial(material);
-        this.sphere = new THREE.Mesh(this.geom, this.material);
-    }
-
-    setPosition(vec) {
-        this.sphere.position.x = vec.getX();
-        this.sphere.position.y = vec.getY();
-        this.sphere.position.z = vec.getZ();
-    }
-    setSize(vec) {
-        this.sphere.scale.x = vec.getX();
-        this.sphere.scale.y = vec.getY();
-        this.sphere.scale.z = vec.getZ();
-    }
-    setRotation(vec) {
-        this.sphere.rotation.x = vec.getX();
-        this.sphere.rotation.y = vec.getY();
-        this.sphere.rotation.z = vec.getZ();
-    }
-    translateBy(vec) {
-        this.sphere.position.x += vec.getX();
-        this.sphere.position.y += vec.getY();
-        this.sphere.position.z += vec.getZ();
-    }
-    rotateBy(vec) {
-        this.sphere.rotation.x += vec.getX();
-        this.sphere.rotation.y += vec.getY();
-        this.sphere.rotation.z += vec.getZ();
-    }
-    getPosition() {
-        return new Vector3D(this.sphere.position.x, this.sphere.position.y, this.sphere.position.z);
-    }
-    getRotation() {
-        return new Vector3D(this.sphere.rotation.x, this.sphere.rotation.y, this.sphere.rotation.z);
-    }
-    getSize() {
-        return new Vector3D(this.sphere.scale.x, this.sphere.scale.y, this.sphere.scale.z);
-    }
-    getMesh() {
-        return this.sphere;
-    }
-    show() {
-        ThreeEngine.scene.add(this.sphere);
-        return this;
-    }
-    hide() {
-        ThreeEngine.scene.remove(this.sphere);
-        return this;
-    }
-}
-
-/**
  * Make 3D Text.
  * @deprecated No longer in use. Do not use.
  */
@@ -532,6 +401,27 @@ class Text3 {
     }
 }
 
+function setUpToDate() {
+    return new Promise(resolve => {
+        for (let i in ObjectManager.listOfObject) {
+            if (!ThreeEngine.scene.children.includes(ObjectManager.listOfObject[i])) {
+                ThreeEngine.scene.add(ObjectManager.listOfObject[i].getMesh());
+            }
+        }
+        if (ObjectManager.removedObjects.length != 0) {
+            for (let i in ObjectManager.removedObjects) {
+                ThreeEngine.scene.remove(ObjectManager.removedObjects[i].getMesh());
+            }
+            ObjectManager.removedObjects = [];
+        }
+        resolve('done');
+    });
+}
+
+async function calculateGameObjects() {
+    await setUpToDate();
+}
+
 function animate() {
     if (ThreeEngine.alive) requestAnimationFrame(animate);
     EventHandler.fireEvent(UpdateEvent, new UpdateEvent());
@@ -540,14 +430,23 @@ function animate() {
         GameObjects.getGameObjects()[i].draw();
     }
 
+    calculateGameObjects();
+
     ThreeEngine.ui.hudTexture.needsUpdate = true;
 
     ThreeEngine.renderer.render(ThreeEngine.scene, ThreeEngine.camera);
     ThreeEngine.renderer.render(ThreeEngine.ui.scene, ThreeEngine.ui.camera);
+
+    for (let i in ObjectManager.listOfObject) {
+        if (ObjectManager.listOfObject[i].hasCollision()) {
+            ObjectManager.listOfObject[i].getCollision().onUpdate();
+        }
+    }
+
 
     var currentTime = Date.now();
     GameEngine.deltaTime = currentTime - oldTime;
     oldTime = currentTime;
 }
 
-export { ThreeEngine, Vector3D, Camera, Collider3D, UI, Cube, Sphere };
+export { ThreeEngine, Vector3D, Camera, Collider3D, UI, ObjectManager };
