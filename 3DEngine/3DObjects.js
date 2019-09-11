@@ -1,5 +1,5 @@
 import * as THREE from '../../three/src/Three.js';
-import { Vector3D, ThreeEngine } from './ThreeEngine.js';
+import { Vector3D, ThreeEngine, ObjectManager } from './ThreeEngine.js';
 import { Collision } from './CollisionManager.js';
 /**
  * Holds 3D Objects.
@@ -107,7 +107,7 @@ class Cube extends GameObject {
      * Display the cube.
      */
     show() {
-        ThreeEngine.scene.add(this.cube);
+        ObjectManager.add(this);
         return this;
     }
 
@@ -115,7 +115,7 @@ class Cube extends GameObject {
      * Hide the cube.
      */
     hide() {
-        ThreeEngine.scene.remove(this.cube);
+        ObjectManager.remove(this);
         return this;
     }
 }
@@ -181,11 +181,11 @@ class Sphere extends GameObject {
         return this.sphere;
     }
     show() {
-        ThreeEngine.scene.add(this.sphere);
+        ObjectManager.add(this);
         return this;
     }
     hide() {
-        ThreeEngine.scene.remove(this.sphere);
+        ObjectManager.remove(this);
         return this;
     }
 }

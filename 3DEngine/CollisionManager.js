@@ -1,11 +1,17 @@
 import { Vector3D, Collider3D, ObjectManager } from "./ThreeEngine.js";
-import { EventHandler, UpdateEvent } from "../MainEngine/GameEngine.js";
+
+/**
+ * Handles Primary Collision
+ */
 class Collision {
     onRegister(obj) {
         this.obj = obj;
     }
 }
 
+/**
+ * A generic collsion that uses the change in position to calculate boundaries.
+ */
 class BoxCollider extends Collision {
     constructor() {
         super();

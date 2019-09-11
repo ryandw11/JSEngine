@@ -18,3 +18,6 @@ import * as jsgame from './node_modules/rjsengine/JSEngine2D.js';
 import * as jsgame from './node_modules/rjsengine/JSEngine3D.js';
 ```
 That will give you access to all of the classes you need.
+
+## Wiki
+View the wiki on how to use the engine here: https://github.com/ryandw11/JSEngine/wiki

@@ -148,6 +148,7 @@ class GameEngine {
 
 /**
  * Handles the GameObjects
+ * @deprecated Use ObjectManager instead.
  */
 class GameObjects {
     static gameObjectsList = [];
@@ -162,6 +163,7 @@ class GameObjects {
     /**
      * Add an object ot the render list.
      * @param {*} obj The Canvas Object to add.
+     * @deprecated Use ObjectManager instead.
      */
     static add(obj) {
         GameObjects.gameObjectsList.push(obj);
@@ -170,6 +172,7 @@ class GameObjects {
     /**
      * Remove an object from the render list.
      * @param {*} obj The object to remove.
+     * @deprecated Use ObjectManager instead.
      */
     static remove(obj) {
         GameObjects.gameObjectsList.splice(GameObjects.gameObjectsList.indexOf(obj), 1);
@@ -179,6 +182,7 @@ class GameObjects {
      * Remove all of a type from the render list.  
      * Example: Remove all Rectangles.
      * @param {*} type The type (Ex: Rectangle)
+     * @deprecated Use ObjectManager instead.
      */
     static removeType(type) {
         for (var i = 0; i < GameObjects.gameObjectsList.length; i++) {
@@ -188,12 +192,16 @@ class GameObjects {
         }
     }
 
+    /**
+     * @deprecated Use ObjectManager instead.
+     */
     static clear() {
         GameObjects.gameObjectsList = [];
     }
 
     /**
      * Get the list of game objects.
+     * @deprecated Use ObjectManager instead.
      */
     static getGameObjects() {
         return GameObjects.gameObjectsList;

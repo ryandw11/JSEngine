@@ -3,8 +3,7 @@
  * Requires Three.js and GameEngine.js to operate.
  * (This 3D engine was developed at the start of the project.)
  * @author Ryandw11
- * @version 1.4
- * **TODO** Fix the scene management in the ThreeEngine class.
+ * @version 1.4.1
 */
 import { EventHandler, UpdateEvent, GameEngine, GameObjects, MouseDownEvent, MouseMoveEvent, KeyHandler } from '../MainEngine/GameEngine.js';
 import * as THREE from '../../three/src/Three.js';
@@ -29,11 +28,17 @@ class ObjectManager {
      * @param {*} obj 
      */
     static remove(obj) {
+        if (!ObjectManager.listOfObject.includes(obj)) return;
         ObjectManager.listOfObject.splice(ObjectManager.listOfObject.indexOf(obj), 1);
         ObjectManager.removedObjects.push(obj);
     }
+    /**
+     * Clear all objects.
+     */
     static clear() {
-
+        while (ObjectManager.listOfObject.length > 0) {
+            ObjectManager.remove(ObjectManager.listOfObject[0]);
+        }
     }
 }
 
@@ -119,17 +124,17 @@ class ThreeEngine {
      */
     setScene(scene, reset = true) {
         if (reset) {
-            while (ThreeEngine.scene.children.length > 0) {
-                ThreeEngine.scene.remove(ThreeEngine.scene.children[0]);
+            while (ObjectManager.listOfObject.length > 0) {
+                ObjectManager.remove(ObjectManager.listOfObject[0]);
             }
         }
         else {
             for (let i in this.currentScene.listOfObjects) {
-                ThreeEngine.scene.remove(this.currentScene.listOfObjects[i].getMesh());
+                ObjectManager.remove(this.currentScene.listOfObjects[i]);
             }
         }
         for (let i in scene.listOfObjects) {
-            ThreeEngine.scene.add(scene.listOfObjects[i].getMesh());
+            ObjectManager.add(scene.listOfObjects[i]);
         }
         this.currentScene = scene;
     }
@@ -140,17 +145,17 @@ class ThreeEngine {
      */
     updateCurrentScene(reset = false) {
         if (reset) {
-            while (ThreeEngine.scene.children.length > 0) {
-                ThreeEngine.scene.remove(ThreeEngine.scene.children[0]);
+            while (ObjectManager.listOfObject.length > 0) {
+                ObjectManager.remove(ObjectManager.listOfObject[0]);
             }
         }
         else {
             for (let i in this.currentScene.listOfObjects) {
-                ThreeEngine.scene.remove(this.currentScene.listOfObjects[i].getMesh());
+                ObjectManager.remove(this.currentScene.listOfObjects[i]);
             }
         }
-        for (let i in this.currentScene.listOfObjects) {
-            ThreeEngine.scene.add(this.currentScene.listOfObjects[i].getMesh());
+        for (let i in scene.listOfObjects) {
+            ObjectManager.add(scene.listOfObjects[i]);
         }
     }
 
@@ -165,9 +170,26 @@ class ThreeEngine {
      * Clear all objects from the game.
      */
     clear() {
-        while (ThreeEngine.scene.children.length > 0) {
-            ThreeEngine.scene.remove(ThreeEngine.scene.children[0]);
+        while (ObjectManager.listOfObject.length > 0) {
+            ObjectManager.remove(ObjectManager.listOfObject[0]);
         }
+    }
+
+    /**
+     * Add a game object.
+     * @param {*} obj 
+     */
+    add(obj) {
+        ObjectManager.add(obj);
+    }
+
+    /**
+     * Remove a game object.
+     * @param {*} obj 
+     */
+    remove(obj) {
+        if (!ObjectManager.listOfObject.includes(obj)) return;
+        ObjectManager.remove(obj);
     }
 }
 
@@ -365,8 +387,19 @@ class UI {
         var plane = new THREE.Mesh(planeGeometry, this.material);
         this.scene.add(plane);
     }
-    draw() {
-
+    /**
+     * Add UI elements to the game.
+     * @param {*} uiObj 
+     */
+    static add(uiObj) {
+        GameObjects.add(uiObj);
+    }
+    /**
+     * Remove UI elements from the game.
+     * @param {*} uiObj 
+     */
+    static remove(uiObj) {
+        GameObjects.remove(uiObj);
     }
 }
 
