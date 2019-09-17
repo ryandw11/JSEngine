@@ -4,3 +4,4 @@
 export * from './MainEngine/GameEngine.js';
 export * from './2DEngine/LightEngine.js';
 export * from './MainEngine/SceneManager.js';
+export * from './2DEngine/ObjectManager.js';
