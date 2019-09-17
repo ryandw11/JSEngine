@@ -1,6 +1,7 @@
 import { GameObjects } from '../MainEngine/GameEngine.js';
 /**
  * Handles the Object System.  
+ * For use in the 2D engine.
  * Used to match the 3D engine counter part.
  * @since 1.1.0
  */

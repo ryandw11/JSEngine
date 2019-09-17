@@ -1,5 +1,6 @@
 # JSEngine
 A 2D and 3D Javascript Game Engine. **Notice: A server is required for import to work properly**
+View the [wiki page](https://github.com/ryandw11/JSEngine/wiki) for assistance on how to get started and documentation.
 
 ## Modes
 There are two modes, 2D mode and 3D mode.
