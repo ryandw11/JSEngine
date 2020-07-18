@@ -2,7 +2,7 @@
  * 
  * JavaScript GameEgine.
  * @author Ryandw11
- * @version 1.2
+ * @version 1.3
  * 
  */
 
@@ -208,6 +208,35 @@ class GameObjects {
     }
 }
 
+/**
+ * The base class of all 2D Game Objects.
+ */
+class GameObject2D {
+    offsetX = 0;
+    offsetY = 0;
+    /**
+     * Set the type of collision on an object.
+     * @param {Collision} collider 
+     */
+    setCollision(collider) {
+        this.collision = collider;
+        this.collision.onRegister(this);
+    }
+    /**
+     * Get the collision of an object.
+     * @returns the collision
+     */
+    getCollision() {
+        return this.collision;
+    }
+    /**
+     * If the object has collisions.
+     */
+    hasCollision() {
+        return this.collision != null && this.collision != undefined;
+    }
+}
+
 class Vector {
     constructor(x1, y1) {
         this.x = x1;
@@ -225,19 +254,22 @@ class Vector {
     add(vec) {
         this.x += vec.x;
         this.y += vec.y;
+        return this;
     }
 
     subtract(vec) {
         this.x -= vec.x;
         this.y -= vec.y;
+        return this;
     }
 }
 
 /**
  * Create a Rectangle Canvas Object.
  */
-class Rectangle {
+class Rectangle extends GameObject2D {
     constructor() {
+        super();
         this.scaleX = 20;
         this.scaleY = 20;
         this.color = "red";
@@ -285,11 +317,11 @@ class Rectangle {
             throw "Rectange position not defined.";
         }
         GameEngine.canvas.fillStyle = this.getColor();
-        GameEngine.canvas.fillRect(this.getPosition().getX(), this.getPosition().getY(), this.getScale().getX(), this.getScale().getY());
+        GameEngine.canvas.fillRect(this.getPosition().getX() + this.offsetX, this.getPosition().getY() + this.offsetY, this.getScale().getX(), this.getScale().getY());
     }
 }
 
-class Ellipse {
+class Ellipse extends GameObject2D {
     /**
      * Create an Ellipse!
      * @param {Number} x X Position
@@ -299,6 +331,7 @@ class Ellipse {
      * @param {String} c Color
      */
     constructor(x = 0, y = 0, rX = 5, rY = 5, c = "black") {
+        super();
         this.posX = x;
         this.posY = y;
         this.radiusX = rX;
@@ -342,7 +375,7 @@ class Ellipse {
     draw() {
         GameEngine.canvas.fillStyle = this.color;
         GameEngine.canvas.beginPath();
-        GameEngine.canvas.ellipse(this.posX, this.posY, this.radiusX, this.radiusY, 0, 0, Math.PI * 2);
+        GameEngine.canvas.ellipse(this.posX + this.offsetX, this.posY + this.offsetY, this.radiusX, this.radiusY, 0, 0, Math.PI * 2);
         GameEngine.canvas.fill();
     }
 }
@@ -350,7 +383,7 @@ class Ellipse {
 /**
  * Game Text to be displayed on the canvas.
  */
-class GText {
+class GText extends GameObject2D {
     /**
      * Create a text string! (Note: Text align must be set using the method.)
      * @param {String} txt The text.
@@ -361,6 +394,7 @@ class GText {
      * @param {String} font The font
      */
     constructor(txt = "default", x = 0, y = 0, color = "black", size = "40px", font = "serif") {
+        super();
         this.text = txt;
         this.posX = x;
         this.posY = y;
@@ -420,11 +454,11 @@ class GText {
         GameEngine.canvas.font = this.size + " " + this.font;
         GameEngine.canvas.fillStyle = this.color;
         GameEngine.canvas.textAlign = this.textAlign;
-        GameEngine.canvas.fillText(this.text, this.posX, this.posY);
+        GameEngine.canvas.fillText(this.text, this.posX + this.offsetX, this.posY + this.offsetY);
     }
 }
 
-class Sprite {
+class Sprite extends GameObject2D {
     /**
      * Load in a sprite
      * @param {String} src The image location
@@ -432,6 +466,7 @@ class Sprite {
      * @param {Function} callback If you want to handle the size yourself. (Params in function: target, ref)
      */
     constructor(src, defaultSize = true, callback = null) {
+        super();
         var ref = this;
         var img = new Image();
         img.src = src;
@@ -510,7 +545,7 @@ class Sprite {
     }
 
     draw() {
-        GameEngine.canvas.drawImage(this.image, this.posX, this.posY, this.sizeX, this.sizeY);
+        GameEngine.canvas.drawImage(this.image, this.posX + this.offsetX, this.posY + this.offsetY, this.sizeX, this.sizeY);
     }
 
 }
@@ -842,9 +877,15 @@ function onGUpdate(e) {
         }
     }
 
+    for (let i in GameObjects.getGameObjects()) {
+        if (GameObjects.getGameObjects()[i].hasCollision()) {
+            GameObjects.getGameObjects()[i].getCollision().onUpdate();
+        }
+    }
+
     var currentTime = Date.now();
     GameEngine.deltaTime = currentTime - oldTime;
     oldTime = currentTime;
 }
 
-export { GameEngine, GameObjects, Vector, Rectangle, Ellipse, GText, Sprite, Line, Sound, Collider, UpdateEvent, MouseDownEvent, MouseMoveEvent, EventHandler, DataHandler, KeyHandler };
+export { GameEngine, GameObjects, Vector, Rectangle, Ellipse, GText, Sprite, Line, Sound, Collider, UpdateEvent, MouseDownEvent, MouseMoveEvent, EventHandler, DataHandler, KeyHandler, GameObject2D };
