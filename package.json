@@ -2,7 +2,7 @@
   "name": "rjsengine",
   "version": "1.1.0",
   "dependencies": {
-    "three": "^0.125.0"
+    "three": "^0.137.0"
   },
   "description": "A JavaScript 2D and 3D GameEngine. This is for a school project only, please ignore.",
   "main": "JSEngine2D.js",
